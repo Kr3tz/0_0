@@ -193,15 +193,6 @@
     <div id="countdown">00:00:00:00</div>
   </div>
 
-  <!-- Panel do wpisywania ile chcesz odjąć czasu -->
-  <div id="time-adjust-container">
-    <label>Dni: <input type="number" id="days-input" min="0" value="0" /></label>
-    <label>Godziny: <input type="number" id="hours-input" min="0" max="23" value="0" /></label>
-    <label>Minuty: <input type="number" id="minutes-input" min="0" max="59" value="0" /></label>
-    <label>Sekundy: <input type="number" id="seconds-input" min="0" max="59" value="10" /></label>
-    <button id="time-adjust-btn" title="Odejmij wpisany czas od odliczania">Skróć czas odliczania</button>
-  </div>
-
 <script>
   const board = document.getElementById('board');
   const message = document.getElementById('message');
@@ -211,14 +202,6 @@
   const countdown = document.getElementById('countdown');
   const countdownLogo = document.getElementById('countdown-logo');
   const secondCountdownText = document.getElementById('second-countdown-text');
-  const timeAdjustBtn = document.getElementById('time-adjust-btn');
-
-  // Inputs do odejmowania czasu
-  const daysInput = document.getElementById('days-input');
-  const hoursInput = document.getElementById('hours-input');
-  const minutesInput = document.getElementById('minutes-input');
-  const secondsInput = document.getElementById('seconds-input');
-
   let gameActive = true;
   const cells = [];
 
@@ -424,4 +407,5 @@
 
 </body>
 </html>
+
 
