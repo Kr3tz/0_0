@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<title>TIC-TAC-TOE Vintage</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    background-color: black;
+    color: red;
+    font-family: 'Share Tech Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  #title {
+    font-size: 6rem;
+    margin-top: 30px;
+  }
+
+  #board {
+    position: relative;
+    margin-top: 50px;
+    width: 480px;
+    height: 480px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+  #board .line {
+    position: absolute;
+    background-color: red;
+  }
+  #line-v1 {
+    top: 0;
+    bottom: 0;
+    left: 33.333%;
+    width: 5px;
+    transform: translateX(-50%);
+  }
+  #line-v2 {
+    top: 0;
+    bottom: 0;
+    left: 66.666%;
+    width: 5px;
+    transform: translateX(-50%);
+  }
+  #line-h1 {
+    left: 0;
+    right: 0;
+    top: 33.333%;
+    height: 5px;
+    transform: translateY(-50%);
+  }
+  #line-h2 {
+    left: 0;
+    right: 0;
+    top: 66.666%;
+    height: 5px;
+    transform: translateY(-50%);
+  }
+
+  .cell {
+    font-size: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: red;
+    user-select: none;
+    line-height: 1;
+    overflow: hidden;
+  }
+
+  #message {
+    margin-top: 20px;
+    font-size: 3rem;
+    height: 40px;
+  }
+
+  #final-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 7rem;
+    text-align: center;
+    line-height: 1.2;
+    display: none;
+  }
+
+  #countdown-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  #countdown-container img {
+    width: 300px; /* powiększone logo */
+    height: 300px;
+    margin-bottom: 20px;
+  }
+
+  #countdown {
+    font-size: 15rem;
+    color: red;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  #second-countdown-text {
+    color: red;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 5rem;
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+
+  #time-adjust-container {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #220000;
+    border: 2px solid red;
+    color: red;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.4rem;
+    padding: 10px 15px;
+    user-select: none;
+    border-radius: 5px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  #time-adjust-container input {
+    width: 50px;
+    background: black;
+    border: 1px solid red;
+    color: red;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.4rem;
+    text-align: center;
+    border-radius: 3px;
+  }
+
+  #time-adjust-container button {
+    background: #440000;
+    border: 2px solid red;
+    color: red;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.4rem;
+  }
+</style>
+</head>
+<body>
+
+  <div id="title">TIC-TAC-TOE</div>
+
+  <div id="board">
+    <div id="line-v1" class="line"></div>
+    <div id="line-v2" class="line"></div>
+    <div id="line-h1" class="line"></div>
+    <div id="line-h2" class="line"></div>
+  </div>
+
+  <div id="message"></div>
+
+  <div id="final-message">GRATULACJE,<br>CZAS ABYŚ TO ZOBACZYŁ/A</div>
+
+  <div id="countdown-container">
+    <img id="countdown-logo" src="logo4.png" alt="Logo" style="display:none;" />
+    <div id="second-countdown-text" style="display:none;">Jeszcze chwilka</div>
+    <div id="countdown">00:00:00:00</div>
+  </div>
+
+  <!-- Panel do wpisywania ile chcesz odjąć czasu -->
+  <div id="time-adjust-container">
+    <label>Dni: <input type="number" id="days-input" min="0" value="0" /></label>
+    <label>Godziny: <input type="number" id="hours-input" min="0" max="23" value="0" /></label>
+    <label>Minuty: <input type="number" id="minutes-input" min="0" max="59" value="0" /></label>
+    <label>Sekundy: <input type="number" id="seconds-input" min="0" max="59" value="10" /></label>
+    <button id="time-adjust-btn" title="Odejmij wpisany czas od odliczania">Skróć czas odliczania</button>
+  </div>
+
+<script>
+  const board = document.getElementById('board');
+  const message = document.getElementById('message');
+  const title = document.getElementById('title');
+  const finalMessage = document.getElementById('final-message');
+  const countdownContainer = document.getElementById('countdown-container');
+  const countdown = document.getElementById('countdown');
+  const countdownLogo = document.getElementById('countdown-logo');
+  const secondCountdownText = document.getElementById('second-countdown-text');
+  const timeAdjustBtn = document.getElementById('time-adjust-btn');
+
+  // Inputs do odejmowania czasu
+  const daysInput = document.getElementById('days-input');
+  const hoursInput = document.getElementById('hours-input');
+  const minutesInput = document.getElementById('minutes-input');
+  const secondsInput = document.getElementById('seconds-input');
+
+  let gameActive = true;
+  const cells = [];
+
+  // Daty odliczania
+  let now = new Date();
+  let firstTargetDate = new Date(now.getFullYear(), 7, 11, 0, 0, 0); // 11 sierpnia
+  if (now > firstTargetDate) firstTargetDate = new Date(now.getFullYear() + 1, 7, 11, 0, 0, 0);
+
+  let secondTargetDate = new Date(now.getFullYear(), 7, 16, 0, 0, 0); // 16 sierpnia
+  if (now > secondTargetDate) secondTargetDate = new Date(now.getFullYear() + 1, 7, 16, 0, 0, 0);
+
+  // Odliczanie - aktualna data do odliczenia (startuje po wygranej)
+  let countdownTarget = null;
+
+  // Tryb odliczania:
+  // 0 = brak odliczania, gra działa
+  // 1 = pierwsze odliczanie do 11 sierpnia
+  // 2 = wyświetlenie logo i tekstu, potem drugie odliczanie do 16 sierpnia
+  let countdownPhase = 0;
+
+  function createBoard() {
+    [...board.children].forEach(child => {
+      if (!child.classList.contains('line')) {
+        board.removeChild(child);
+      }
+    });
+
+    for (let i = 0; i < 9; i++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      cell.addEventListener('click', () => playerMove(i));
+      board.appendChild(cell);
+      cells[i] = cell;
+    }
+  }
+
+  function playerMove(index) {
+    if (!gameActive) return;
+    if (cells[index].textContent !== '') return;
+
+    cells[index].textContent = 'X';
+
+    if (checkWin('X')) {
+      endGame(true);
+      return;
+    }
+
+    if (isDraw()) {
+      endGame(false, true);
+      return;
+    }
+
+    gameActive = false;
+    setTimeout(() => {
+      computerMove();
+      gameActive = true;
+    }, 400);
+  }
+
+  function computerMove() {
+    const empty = cells.map((c, i) => c.textContent === '' ? i : null).filter(i => i !== null);
+    if (empty.length === 0) return;
+
+    const choice = empty[Math.floor(Math.random() * empty.length)];
+    cells[choice].textContent = 'O';
+
+    if (checkWin('O')) {
+      endGame(true);
+      return;
+    }
+
+    if (isDraw()) {
+      endGame(false, true);
+      return;
+    }
+  }
+
+  function checkWin(player) {
+    const wins = [
+      [0,1,2], [3,4,5], [6,7,8],
+      [0,3,6], [1,4,7], [2,5,8],
+      [0,4,8], [2,4,6]
+    ];
+
+    return wins.some(line => line.every(i => cells[i].textContent === player));
+  }
+
+  function isDraw() {
+    return cells.every(c => c.textContent !== '');
+  }
+
+  function endGame(won, draw = false) {
+    gameActive = false;
+    if (won) {
+      message.textContent = 'Wygrana!';
+      startCountdown();
+    } else if (draw) {
+      message.textContent = 'Remis!';
+    } else {
+      message.textContent = '';
+    }
+  }
+
+  let countdownTimerId = null;
+
+  function startCountdown() {
+    countdownPhase = 1;
+    countdownTarget = firstTargetDate;
+    showCountdown();
+  }
+
+  function showCountdown() {
+    countdownContainer.style.display = 'flex';
+
+    if (countdownPhase === 1) {
+      countdownLogo.style.display = 'none';
+      secondCountdownText.style.display = 'none';
+      countdown.style.display = 'block';
+    } else if (countdownPhase === 2) {
+      countdownLogo.style.display = 'block';
+      secondCountdownText.style.display = 'block';
+      countdown.style.display = 'block';
+    }
+
+    function update() {
+      const now = new Date();
+      let diff = countdownTarget - now;
+
+      if (diff <= 0) {
+        if (countdownPhase === 1) {
+          countdownPhase = 2;
+          countdownTarget = secondTargetDate;
+          countdownLogo.style.display = 'block';
+          secondCountdownText.style.display = 'block';
+          update();
+          return;
+        } else if (countdownPhase === 2) {
+          countdown.style.display = 'none';  // ukryj odliczanie
+
+          // Ukryj tekst "Jeszcze chwilka"
+          secondCountdownText.style.display = 'none';
+
+          // Pokaż logo
+          countdownLogo.style.display = 'block';
+
+          // Zrób czerwony kwadrat z przyciskiem
+          const linkContainer = document.createElement('div');
+          linkContainer.style.backgroundColor = '#220000';
+          linkContainer.style.border = '2px solid red';
+          linkContainer.style.color = 'red';
+          linkContainer.style.fontFamily = "'Share Tech Mono', monospace";
+          linkContainer.style.fontSize = '1.6rem';
+          linkContainer.style.padding = '20px';
+          linkContainer.style.marginTop = '20px';
+          linkContainer.style.textAlign = 'center';
+          linkContainer.style.borderRadius = '5px';
+          linkContainer.style.userSelect = 'none';
+
+          const button = document.createElement('button');
+          button.textContent = 'Przejdź do playlisty';
+          button.style.background = '#440000';
+          button.style.border = '2px solid red';
+          button.style.color = 'red';
+          button.style.cursor = 'pointer';
+          button.style.padding = '10px 20px';
+          button.style.borderRadius = '5px';
+          button.style.fontFamily = "'Share Tech Mono', monospace";
+          button.style.fontSize = '2rem';
+
+          button.addEventListener('click', () => {
+            window.open('https://on.soundcloud.com/rjMYm9kegzYWl3ssvj', '_blank');
+          });
+
+          linkContainer.appendChild(button);
+          countdownContainer.appendChild(linkContainer);
+
+          return;
+        }
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      countdown.textContent =
+        String(days).padStart(2, '0') + ':' +
+        String(hours).padStart(2, '0') + ':' +
+        String(minutes).padStart(2, '0') + ':' +
+        String(seconds).padStart(2, '0');
+
+      countdownTimerId = requestAnimationFrame(update);
+    }
+
+    update();
+  }
+
+  // Obsługa odejmowania czasu przez użytkownika
+  timeAdjustBtn.addEventListener('click', () => {
+    if (countdownPhase === 0) return;
+
+    let daysVal = parseInt(daysInput.value) || 0;
+    let hoursVal = parseInt(hoursInput.value) || 0;
+    let minutesVal = parseInt(minutesInput.value) || 0;
+    let secondsVal = parseInt(secondsInput.value) || 0;
+
+    let totalMs = 
+      daysVal * 24 * 60 * 60 * 1000 +
+      hoursVal * 60 * 60 * 1000 +
+      minutesVal * 60 * 1000 +
+      secondsVal * 1000;
+
+    countdownTarget = new Date(countdownTarget.getTime() - totalMs);
+
+    // Przycisk po kliknięciu odświeży odliczanie
+  });
+
+  // Start gry
+  createBoard();
+</script>
+
+</body>
+</html>
