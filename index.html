@@ -416,24 +416,6 @@
     update();
   }
 
-  // Obsługa odejmowania czasu przez użytkownika
-  timeAdjustBtn.addEventListener('click', () => {
-    if (countdownPhase === 0) return;
-
-    let daysVal = parseInt(daysInput.value) || 0;
-    let hoursVal = parseInt(hoursInput.value) || 0;
-    let minutesVal = parseInt(minutesInput.value) || 0;
-    let secondsVal = parseInt(secondsInput.value) || 0;
-
-    let totalMs = 
-      daysVal * 24 * 60 * 60 * 1000 +
-      hoursVal * 60 * 60 * 1000 +
-      minutesVal * 60 * 1000 +
-      secondsVal * 1000;
-
-    countdownTarget = new Date(countdownTarget.getTime() - totalMs);
-
-    // Przycisk po kliknięciu odświeży odliczanie
   });
 
   // Start gry
@@ -442,3 +424,4 @@
 
 </body>
 </html>
+
