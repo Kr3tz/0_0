@@ -130,46 +130,6 @@
     margin-bottom: 30px;
   }
 
-  #time-adjust-container {
-    position: fixed;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #220000;
-    border: 2px solid red;
-    color: red;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.4rem;
-    padding: 10px 15px;
-    user-select: none;
-    border-radius: 5px;
-    z-index: 1000;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-
-  #time-adjust-container input {
-    width: 50px;
-    background: black;
-    border: 1px solid red;
-    color: red;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.4rem;
-    text-align: center;
-    border-radius: 3px;
-  }
-
-  #time-adjust-container button {
-    background: #440000;
-    border: 2px solid red;
-    color: red;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.4rem;
-  }
 </style>
 </head>
 <body>
@@ -202,6 +162,7 @@
   const countdown = document.getElementById('countdown');
   const countdownLogo = document.getElementById('countdown-logo');
   const secondCountdownText = document.getElementById('second-countdown-text');
+
   let gameActive = true;
   const cells = [];
 
@@ -339,45 +300,8 @@
           update();
           return;
         } else if (countdownPhase === 2) {
-          countdown.style.display = 'none';  // ukryj odliczanie
-
-          // Ukryj tekst "Jeszcze chwilka"
-          secondCountdownText.style.display = 'none';
-
-          // Pokaż logo
-          countdownLogo.style.display = 'block';
-
-          // Zrób czerwony kwadrat z przyciskiem
-          const linkContainer = document.createElement('div');
-          linkContainer.style.backgroundColor = '#220000';
-          linkContainer.style.border = '2px solid red';
-          linkContainer.style.color = 'red';
-          linkContainer.style.fontFamily = "'Share Tech Mono', monospace";
-          linkContainer.style.fontSize = '1.6rem';
-          linkContainer.style.padding = '20px';
-          linkContainer.style.marginTop = '20px';
-          linkContainer.style.textAlign = 'center';
-          linkContainer.style.borderRadius = '5px';
-          linkContainer.style.userSelect = 'none';
-
-          const button = document.createElement('button');
-          button.textContent = 'Przejdź do playlisty';
-          button.style.background = '#440000';
-          button.style.border = '2px solid red';
-          button.style.color = 'red';
-          button.style.cursor = 'pointer';
-          button.style.padding = '10px 20px';
-          button.style.borderRadius = '5px';
-          button.style.fontFamily = "'Share Tech Mono', monospace";
-          button.style.fontSize = '2rem';
-
-          button.addEventListener('click', () => {
-            window.open('https://on.soundcloud.com/rjMYm9kegzYWl3ssvj', '_blank');
-          });
-
-          linkContainer.appendChild(button);
-          countdownContainer.appendChild(linkContainer);
-
+          countdownContainer.style.display = 'none';
+          alert('Strona spaliła się całkowicie! 🔥🔥🔥');
           return;
         }
       }
@@ -399,13 +323,8 @@
     update();
   }
 
-  });
-
-  // Start gry
   createBoard();
 </script>
 
 </body>
 </html>
-
-
