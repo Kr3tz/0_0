@@ -2,251 +2,170 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8" />
-<title>????</title>
+<title>S̴̝̪͓̠͚̭̽͜͠E̴̛͙̗̩̯̰̓͝K̷̺͓̘̐̐̈́̒͊̈́͋̚͝Ţ̶̧̭̺̩̙̎̀̑̂̒́̊͜͠ͅͅǪ̶͓͕̯͖̥̞̗͖̞̀̕R̷̨̻̖̮̹̠̦̙̒̌͐̏̈̆͊̂͘̚͜ ̶̹̖̟̺͚̽͌͝N̴͙̣̺̙͈͓͉̩̹͑̏̔I̷̹̱͙̝̘͕̰̱͍͍̍̔E̷̢̹̭̅̈́̎̈́̊̆̕Z̸̝̓̈́̈́͊̈́̈̕͠Ȃ̸͇̪͖̭͕̬̮̝̩̏̒͒̾̋̀͊͝Ĺ̵̨̦͉͈̯̰͔͜Ȩ̵̡̧͍̼̦̟̗̹̅̊̍͋̅Ż̴̧̛̦̟̲̹̼͙͉̀̈͗̐̀̓͘̚͝N̸̡̨̥̗͕̥̣̼̻͖͋͐̈́̌̚Y̴̠̱͈͝͝</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; padding: 0;
-    background-color: black;
-    color: red;
-    font-family: 'Share Tech Mono', monospace;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-    user-select: none;
-  }
-  #title { font-size: 6rem; margin-top: 30px; }
-  #board {
-    position: relative;
-    margin-top: 50px;
-    width: 480px;
-    height: 480px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-  }
-  #board .line { position: absolute; background-color: red; }
-  #line-v1 { top: 0; bottom: 0; left: 33.333%; width: 5px; transform: translateX(-50%); }
-  #line-v2 { top: 0; bottom: 0; left: 66.666%; width: 5px; transform: translateX(-50%); }
-  #line-h1 { left: 0; right: 0; top: 33.333%; height: 5px; transform: translateY(-50%); }
-  #line-h2 { left: 0; right: 0; top: 66.666%; height: 5px; transform: translateY(-50%); }
-  .cell {
-    font-size: 10rem; display: flex; justify-content: center; align-items: center;
-    cursor: pointer; color: red; user-select: none; line-height: 1; overflow: hidden;
-  }
-  #message { margin-top: 20px; font-size: 3rem; height: 40px; }
-  #final-message {
-    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    font-size: 7rem; text-align: center; line-height: 1.2; display: none;
-  }
-  #countdown-container {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background-color: black; display: none; justify-content: center;
-    align-items: center; flex-direction: column;
-  }
-  #countdown-container img { width: 300px; height: 300px; margin-bottom: 20px; }
-  #countdown { font-size: 15rem; color: red; font-family: 'Share Tech Mono', monospace; }
-  #second-countdown-text {
-    color: red; font-family: 'Share Tech Mono', monospace;
-    font-size: 5rem; margin-top: 10px; margin-bottom: 30px;
-  }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+        color: red;
+        font-family: 'Share Tech Mono', monospace;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        user-select: none;
+    }
+    #title { font-size: 6rem; margin-top: 30px; }
+    #board {
+        position: relative;
+        margin-top: 50px;
+        width: 480px;
+        height: 480px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+    #board .line { position: absolute; background-color: red; }
+    #line-v1 { top: 0; bottom: 0; left: 33.333%; width: 5px; transform: translateX(-50%); }
+    #line-v2 { top: 0; bottom: 0; left: 66.666%; width: 5px; transform: translateX(-50%); }
+    #line-h1 { left: 0; right: 0; top: 33.333%; height: 5px; transform: translateY(-50%); }
+    #line-h2 { left: 0; right: 0; top: 66.666%; height: 5px; transform: translateY(-50%); }
+    .cell {
+        font-size: 10rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: red;
+        user-select: none;
+        line-height: 1;
+        overflow: hidden;
+    }
+    #message { margin-top: 20px; font-size: 3rem; height: 40px; }
+    #end-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: black;
+        color: red;
+        font-family: 'Share Tech Mono', monospace;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #end-screen img {
+        width: 300px;
+        height: 300px;
+        margin-bottom: 20px;
+    }
+    #end-screen button {
+        background: #440000;
+        border: 2px solid red;
+        color: red;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 2rem;
+    }
 </style>
 </head>
 <body>
+    <div id="title">TIC-TAC-TOE</div>
+    <div id="board">
+        <div id="line-v1" class="line"></div>
+        <div id="line-v2" class="line"></div>
+        <div id="line-h1" class="line"></div>
+        <div id="line-h2" class="line"></div>
+    </div>
+    <div id="message"></div>
 
-  <div id="title">TIC-TAC-TOE</div>
-
-  <div id="board">
-    <div id="line-v1" class="line"></div>
-    <div id="line-v2" class="line"></div>
-    <div id="line-h1" class="line"></div>
-    <div id="line-h2" class="line"></div>
-  </div>
-
-  <div id="message"></div>
-
-  <div id="final-message">GRATULACJE,<br>CZAS ABYŚ TO ZOBACZYŁ/A</div>
-
-  <div id="countdown-container">
-    <img id="countdown-logo" src="logo4.png" alt="Logo" style="display:none;" />
-    <div id="second-countdown-text" style="display:none;">Jeszcze chwilka</div>
-    <div id="countdown">00:00:00:00</div>
-  </div>
+    <div id="end-screen">
+        <img src="logo4.png" alt="Logo" />
+        <button onclick="window.open('https://on.soundcloud.com/NslDF0pqf77tXcw6fb', '_blank')">
+            Przejdź do playlisty
+        </button>
+    </div>
 
 <script>
-  const board = document.getElementById('board');
-  const message = document.getElementById('message');
-  const countdownContainer = document.getElementById('countdown-container');
-  const countdown = document.getElementById('countdown');
-  const countdownLogo = document.getElementById('countdown-logo');
-  const secondCountdownText = document.getElementById('second-countdown-text');
+const board = document.getElementById('board');
+const message = document.getElementById('message');
+const endScreen = document.getElementById('end-screen');
+let gameActive = true;
+const cells = [];
 
-  let gameActive = true;
-  const cells = [];
-
-  let now = new Date();
-  let secondTargetDate = new Date(now.getFullYear(), 7, 16, 0, 0, 0);
-  if (now > secondTargetDate) secondTargetDate = new Date(now.getFullYear() + 1, 7, 16, 0, 0, 0);
-
-  let countdownTarget = null;
-
-  function createBoard() {
+function createBoard() {
     [...board.children].forEach(child => {
-      if (!child.classList.contains('line')) {
-        board.removeChild(child);
-      }
+        if (!child.classList.contains('line')) {
+            board.removeChild(child);
+        }
     });
-
     for (let i = 0; i < 9; i++) {
-      const cell = document.createElement('div');
-      cell.classList.add('cell');
-      cell.addEventListener('click', () => playerMove(i));
-      board.appendChild(cell);
-      cells[i] = cell;
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.addEventListener('click', () => playerMove(i));
+        board.appendChild(cell);
+        cells[i] = cell;
     }
-  }
+}
 
-  function playerMove(index) {
+function playerMove(index) {
     if (!gameActive) return;
     if (cells[index].textContent !== '') return;
-
     cells[index].textContent = 'X';
-
-    if (checkWin('X')) {
-      endGame(true);
-      return;
-    }
-
-    if (isDraw()) {
-      endGame(false, true);
-      return;
-    }
-
+    if (checkWin('X')) { endGame(true); return; }
+    if (isDraw()) { endGame(false, true); return; }
     gameActive = false;
-    setTimeout(() => {
-      computerMove();
-      gameActive = true;
-    }, 400);
-  }
+    setTimeout(() => { computerMove(); gameActive = true; }, 400);
+}
 
-  function computerMove() {
+function computerMove() {
     const empty = cells.map((c, i) => c.textContent === '' ? i : null).filter(i => i !== null);
     if (empty.length === 0) return;
-
     const choice = empty[Math.floor(Math.random() * empty.length)];
     cells[choice].textContent = 'O';
+    if (checkWin('O')) { endGame(false); return; }
+    if (isDraw()) { endGame(false, true); return; }
+}
 
-    if (checkWin('O')) {
-      endGame(true);
-      return;
-    }
-
-    if (isDraw()) {
-      endGame(false, true);
-      return;
-    }
-  }
-
-  function checkWin(player) {
+function checkWin(player) {
     const wins = [
-      [0,1,2], [3,4,5], [6,7,8],
-      [0,3,6], [1,4,7], [2,5,8],
-      [0,4,8], [2,4,6]
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
     ];
     return wins.some(line => line.every(i => cells[i].textContent === player));
-  }
+}
 
-  function isDraw() {
+function isDraw() {
     return cells.every(c => c.textContent !== '');
-  }
+}
 
-  function endGame(won, draw = false) {
+function endGame(won, draw = false) {
     gameActive = false;
     if (won) {
-      message.textContent = 'Wygrana!';
-      startCountdown();
+        message.textContent = 'Wygrana!';
+        showEndScreen();
     } else if (draw) {
-      message.textContent = 'Remis!';
+        message.textContent = 'Remis!';
+        showEndScreen();
     } else {
-      message.textContent = '';
+        message.textContent = '';
     }
-  }
+}
 
-  let countdownTimerId = null;
+function showEndScreen() {
+    endScreen.style.display = 'flex';
+}
 
-  function startCountdown() {
-    countdownTarget = secondTargetDate;
-    showCountdown();
-  }
-
-  function showCountdown() {
-    countdownContainer.style.display = 'flex';
-    countdownLogo.style.display = 'block';
-    secondCountdownText.style.display = 'block';
-    countdown.style.display = 'block';
-
-    function update() {
-      const now = new Date();
-      let diff = countdownTarget - now;
-
-      if (diff <= 0) {
-        countdown.style.display = 'none';
-        secondCountdownText.style.display = 'none';
-        countdownLogo.style.display = 'block';
-
-        const linkContainer = document.createElement('div');
-        linkContainer.style.backgroundColor = '#220000';
-        linkContainer.style.border = '2px solid red';
-        linkContainer.style.color = 'red';
-        linkContainer.style.fontFamily = "'Share Tech Mono', monospace";
-        linkContainer.style.fontSize = '1.6rem';
-        linkContainer.style.padding = '20px';
-        linkContainer.style.marginTop = '20px';
-        linkContainer.style.textAlign = 'center';
-        linkContainer.style.borderRadius = '5px';
-        linkContainer.style.userSelect = 'none';
-
-        const button = document.createElement('button');
-        button.textContent = 'Przejdź do playlisty';
-        button.style.background = '#440000';
-        button.style.border = '2px solid red';
-        button.style.color = 'red';
-        button.style.cursor = 'pointer';
-        button.style.padding = '10px 20px';
-        button.style.borderRadius = '5px';
-        button.style.fontFamily = "'Share Tech Mono', monospace";
-        button.style.fontSize = '2rem';
-
-        button.addEventListener('click', () => {
-          window.open('https://on.soundcloud.com/NslDF0pqf77tXcw6fb', '_blank');
-        });
-
-        linkContainer.appendChild(button);
-        countdownContainer.appendChild(linkContainer);
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      countdown.textContent =
-        String(days).padStart(2, '0') + ':' +
-        String(hours).padStart(2, '0') + ':' +
-        String(minutes).padStart(2, '0') + ':' +
-        String(seconds).padStart(2, '0');
-
-      countdownTimerId = requestAnimationFrame(update);
-    }
-    update();
-  }
-
-  createBoard();
+createBoard();
 </script>
-
 </body>
 </html>
