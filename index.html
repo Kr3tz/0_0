@@ -18,7 +18,7 @@
         position: relative;
     }
 
-    /* tło z siatką napisów */
+
     .background-grid {
         position: absolute;
         top: 0;
@@ -41,7 +41,7 @@
         color: red;
     }
 
-    /* warstwa biała na napisach (normalne) */
+
     .background-grid .cell::after {
         content: attr(data-text);
         position: absolute;
@@ -51,7 +51,7 @@
         pointer-events: none;
     }
 
-    /* całkowicie białe napisy */
+
     .background-grid .cell.white-only {
         color: white;
     }
@@ -59,7 +59,6 @@
         content: "";
     }
 
-    /* zawartość strony */
     .content {
         text-align: center;
         z-index: 2;
@@ -83,10 +82,9 @@
 </style>
 </head>
 <body>
-    <!-- tło z siatką -->
     <div class="background-grid" id="background"></div>
 
-    <!-- treść strony -->
+
     <div class="content">
         <img src="logo4.png" alt="Logo">
         <br>
@@ -105,7 +103,7 @@ for (let i = 0; i < 100; i++) {
     cell.setAttribute('data-text', text);
     cell.textContent = text;
 
-    // Losowo ~10% napisów tylko w bieli
+
     if (Math.random() < 0.1) {
         cell.classList.add('white-only');
     }
@@ -115,4 +113,5 @@ for (let i = 0; i < 100; i++) {
 </script>
 </body>
 </html>
+
 
