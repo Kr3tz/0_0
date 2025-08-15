@@ -1,71 +1,76 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8" />
-<title>S̴̝̪͓̠͚̭̽͜͠E̴̛͙̗̩̯̰̓͝K̷̺͓̘̐̐̈́̒͊̈́͋̚͝Ţ̶̧̭̺̩̙̎̀̑̂̒́̊͜͠ͅͅǪ̶͓͕̯͖̥̞̗͖̞̀̕R̷̨̻̖̮̹̠̦̙̒̌͐̏̈̆͊̂͘̚͜ ̶̹̖̟̺͚̽͌͝N̴͙̣̺̙͈͓͉̩̹͑̏̔I̷̹̱͙̝̘͕̰̱͍͍̍̔E̷̢̹̭̅̈́̎̈́̊̆̕Z̸̝̓̈́̈́͊̈́̈̕͠Ȃ̸͇̪͖̭͕̬̮̝̩̏̒͒̾̋̀͊͝Ĺ̵̨̦͉͈̯̰͔͜Ȩ̵̡̧͍̼̦̟̗̹̅̊̍͋̅Ż̴̧̛̦̟̲̹̼͙͉̀̈͗̐̀̓͘̚͝N̸̡̨̥̗͕̥̣̼̻͖͋͐̈́̌̚Y̴̠̱͈͝͝</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<title>Strona z playlistą</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-    * { box-sizing: border-box; }
     body {
         margin: 0;
-        padding: 0;
         background-color: black;
         color: red;
         font-family: 'Share Tech Mono', monospace;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
         height: 100vh;
-        overflow: hidden;
-        user-select: none;
-    }
-    #title { font-size: 6rem; margin-top: 30px; }
-    #board {
-        position: relative;
-        margin-top: 50px;
-        width: 480px;
-        height: 480px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-    }
-    #board .line { position: absolute; background-color: red; }
-    #line-v1 { top: 0; bottom: 0; left: 33.333%; width: 5px; transform: translateX(-50%); }
-    #line-v2 { top: 0; bottom: 0; left: 66.666%; width: 5px; transform: translateX(-50%); }
-    #line-h1 { left: 0; right: 0; top: 33.333%; height: 5px; transform: translateY(-50%); }
-    #line-h2 { left: 0; right: 0; top: 66.666%; height: 5px; transform: translateY(-50%); }
-    .cell {
-        font-size: 10rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        cursor: pointer;
-        color: red;
-        user-select: none;
-        line-height: 1;
         overflow: hidden;
+        position: relative;
     }
-    #message { margin-top: 20px; font-size: 3rem; height: 40px; }
-    #end-screen {
-        position: fixed;
+
+    /* tło z siatką napisów */
+    .background-grid {
+        position: absolute;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: black;
-        color: red;
-        font-family: 'Share Tech Mono', monospace;
-        display: none;
-        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-auto-rows: 80px;
+        z-index: -1;
+        opacity: 0.15;
+    }
+
+    .background-grid .cell {
+        position: relative;
+        display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 1.5rem;
+        color: red;
     }
-    #end-screen img {
+
+    /* warstwa biała na napisach (normalne) */
+    .background-grid .cell::after {
+        content: attr(data-text);
+        position: absolute;
+        color: white;
+        opacity: 0.4;
+        transform: translate(2px, 2px);
+        pointer-events: none;
+    }
+
+    /* całkowicie białe napisy */
+    .background-grid .cell.white-only {
+        color: white;
+    }
+    .background-grid .cell.white-only::after {
+        content: "";
+    }
+
+    /* zawartość strony */
+    .content {
+        text-align: center;
+        z-index: 2;
+    }
+
+    .content img {
         width: 300px;
-        height: 300px;
         margin-bottom: 20px;
     }
-    #end-screen button {
+
+    .content button {
         background: #440000;
         border: 2px solid red;
         color: red;
@@ -78,94 +83,35 @@
 </style>
 </head>
 <body>
-    <div id="title">TIC-TAC-TOE</div>
-    <div id="board">
-        <div id="line-v1" class="line"></div>
-        <div id="line-v2" class="line"></div>
-        <div id="line-h1" class="line"></div>
-        <div id="line-h2" class="line"></div>
-    </div>
-    <div id="message"></div>
+    <!-- tło z siatką -->
+    <div class="background-grid" id="background"></div>
 
-    <div id="end-screen">
-        <img src="logo4.png" alt="Logo" />
+    <!-- treść strony -->
+    <div class="content">
+        <img src="logo4.png" alt="Logo">
+        <br>
         <button onclick="window.open('https://on.soundcloud.com/NslDF0pqf77tXcw6fb', '_blank')">
             Przejdź do playlisty
         </button>
     </div>
 
 <script>
-const board = document.getElementById('board');
-const message = document.getElementById('message');
-const endScreen = document.getElementById('end-screen');
-let gameActive = true;
-const cells = [];
+const text = "S̴̝̪͓̠͚̭̽͜͠E̴̛͙̗̩̯̰̓͝K̷̺͓̘̐̐̈́̒͊̈́͋̚͝Ţ̶̧̭̺̩̙̎̀̑̂̒́̊͜͠ͅͅǪ̶͓͕̯͖̥̞̗͖̞̀̕R̷̨̻̖̮̹̠̦̙̒̌͐̏̈̆͊̂͘̚͜ ̶̹̖̟̺͚̽͌͝N̴͙̣̺̙͈͓͉̩̹͑̏̔I̷̹̱͙̝̘͕̰̱͍͍̍̔E̷̢̹̭̅̈́̎̈́̊̆̕Z̸̝̓̈́̈́͊̈́̈̕͠Ȃ̸͇̪͖̭͕̬̮̝̩̏̒͒̾̋̀͊͝Ĺ̵̨̦͉͈̯̰͔͜Ȩ̵̡̧͍̼̦̟̗̹̅̊̍͋̅Ż̴̧̛̦̟̲̹̼͙͉̀̈͗̐̀̓͘̚͝N̸̡̨̥̗͕̥̣̼̻͖͋͐̈́̌̚Y̴̠̱͈͝͝";
+const container = document.getElementById('background');
 
-function createBoard() {
-    [...board.children].forEach(child => {
-        if (!child.classList.contains('line')) {
-            board.removeChild(child);
-        }
-    });
-    for (let i = 0; i < 9; i++) {
-        const cell = document.createElement('div');
-        cell.classList.add('cell');
-        cell.addEventListener('click', () => playerMove(i));
-        board.appendChild(cell);
-        cells[i] = cell;
+for (let i = 0; i < 100; i++) {
+    const cell = document.createElement('div');
+    cell.classList.add('cell');
+    cell.setAttribute('data-text', text);
+    cell.textContent = text;
+
+    // Losowo ~10% napisów tylko w bieli
+    if (Math.random() < 0.1) {
+        cell.classList.add('white-only');
     }
-}
 
-function playerMove(index) {
-    if (!gameActive) return;
-    if (cells[index].textContent !== '') return;
-    cells[index].textContent = 'X';
-    if (checkWin('X')) { endGame(true); return; }
-    if (isDraw()) { endGame(false, true); return; }
-    gameActive = false;
-    setTimeout(() => { computerMove(); gameActive = true; }, 400);
+    container.appendChild(cell);
 }
-
-function computerMove() {
-    const empty = cells.map((c, i) => c.textContent === '' ? i : null).filter(i => i !== null);
-    if (empty.length === 0) return;
-    const choice = empty[Math.floor(Math.random() * empty.length)];
-    cells[choice].textContent = 'O';
-    if (checkWin('O')) { endGame(false); return; }
-    if (isDraw()) { endGame(false, true); return; }
-}
-
-function checkWin(player) {
-    const wins = [
-        [0,1,2], [3,4,5], [6,7,8],
-        [0,3,6], [1,4,7], [2,5,8],
-        [0,4,8], [2,4,6]
-    ];
-    return wins.some(line => line.every(i => cells[i].textContent === player));
-}
-
-function isDraw() {
-    return cells.every(c => c.textContent !== '');
-}
-
-function endGame(won, draw = false) {
-    gameActive = false;
-    if (won) {
-        message.textContent = 'Wygrana!';
-        showEndScreen();
-    } else if (draw) {
-        message.textContent = 'Remis!';
-        showEndScreen();
-    } else {
-        message.textContent = '';
-    }
-}
-
-function showEndScreen() {
-    endScreen.style.display = 'flex';
-}
-
-createBoard();
 </script>
 </body>
 </html>
